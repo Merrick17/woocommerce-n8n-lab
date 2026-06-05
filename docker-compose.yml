@@ -1,0 +1,84 @@
+services:
+  db:
+    image: mysql:8
+    container_name: woocommerce_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_pass
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  wordpress:
+    image: wordpress:latest
+    container_name: woocommerce_wp
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_pass
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_MEMORY_LIMIT', '1024M');
+        define('WP_MAX_MEMORY_LIMIT', '1024M');
+        define('DISABLE_WP_CRON', true);
+    volumes:
+      - wp_data:/var/www/html
+      - ./php-custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+      - ./mu-plugins:/var/www/html/wp-content/mu-plugins:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  wp-cron:
+    image: curlimages/curl:latest
+    container_name: woocommerce_wp_cron
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        while true; do
+          curl -fsS "http://wordpress/wp-cron.php?doing_wp_cron" >/dev/null 2>&1 || true
+          sleep 60
+        done
+
+  n8n:
+    image: n8nio/n8n
+    container_name: n8n
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+    ports:
+      - "5678:5678"
+    environment:
+      N8N_BASIC_AUTH_ACTIVE: "true"
+      N8N_BASIC_AUTH_USER: admin
+      N8N_BASIC_AUTH_PASSWORD: admin123
+      N8N_HOST: localhost
+      N8N_PORT: "5678"
+      WEBHOOK_URL: http://localhost:5678/
+      WORDPRESS_URL: http://wordpress:80
+      WOOCOMMERCE_URL: http://wordpress:80
+    volumes:
+      - n8n_data:/home/node/.n8n
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  db_data:
+  wp_data:
+  n8n_data:
