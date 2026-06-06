@@ -34,6 +34,7 @@ services:
         define('WP_MEMORY_LIMIT', '1024M');
         define('WP_MAX_MEMORY_LIMIT', '1024M');
         define('DISABLE_WP_CRON', true);
+        define('WP_ENVIRONMENT_TYPE', 'local');
     volumes:
       - wp_data:/var/www/html
       - ./php-custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro

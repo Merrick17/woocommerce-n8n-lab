@@ -14,7 +14,7 @@ woocommerce-n8n-lab/
 ├── docker-compose.yml          # Stack definition
 ├── php-custom.ini              # PHP memory & upload limits for WordPress
 ├── mu-plugins/
-│   └── local-docker.php        # Rewrites localhost URLs for container networking
+│   └── local-docker.php        # Docker networking + WooCommerce REST API bootstrap
 └── README.md
 ```
 
@@ -65,22 +65,46 @@ Verify four containers are running:
    - **Secret:** optional, match it in n8n if you validate signatures
 5. Save the webhook
 
-### n8n → WooCommerce (REST API)
+### n8n → WooCommerce (REST API / WooCommerce node)
 
-When n8n calls the WooCommerce API, use the Docker-internal URL — **not** `localhost:8080`:
+Create API keys in **WooCommerce → Settings → Advanced → REST API → Add key** (Read/Write, assigned to your admin user).
+
+In n8n, create **WooCommerce API** credentials:
+
+| Field | Value |
+|---|---|
+| WooCommerce URL | `http://wordpress:80` |
+| Consumer Key | from WooCommerce (starts with `ck_`) |
+| Consumer Secret | from WooCommerce (starts with `cs_`) |
+| Include Credentials in Query | **ON** (recommended for Docker) |
+
+Important:
+
+- Always include the protocol: `http://wordpress:80` — not `wordpress:80` or `host.docker.internal:8080`
+- Paste keys with WooCommerce’s **Copy** button (no trailing spaces)
+- The credential **Test** button may fail even when the node works — try **Product → Get All → Execute step**
+
+For HTTP Request nodes, use the Docker-internal base URL — **not** `localhost:8080`:
 
 ```
 {{ $env.WOOCOMMERCE_URL }}/wp-json/wc/v3/orders
 {{ $env.WOOCOMMERCE_URL }}/wp-json/wc/v3/products
 ```
 
-Create API keys in **WooCommerce → Settings → Advanced → REST API → Add key**, then use them in the n8n HTTP Request node (Basic Auth or query string).
+The mu-plugin auto-enables pretty permalinks, Apache rewrite rules, and the WooCommerce REST API so `/wp-json/` works out of the box after `docker compose up`.
 
 ## How local Docker networking works
 
 Inside Docker, `localhost` refers to the container itself — not your PC and not other services. This stack solves that in two ways:
 
-### 1. URL rewriting (`mu-plugins/local-docker.php`)
+### 1. Mu-plugin bootstrap (`mu-plugins/local-docker.php`)
+
+On each WordPress load, the mu-plugin:
+
+- Enables **pretty permalinks** and writes **Apache rewrite rules** (fixes `/wp-json/` 404)
+- Enables the **WooCommerce REST API** if it was turned off
+- Allows **API key auth over HTTP** so n8n can connect without HTTPS
+- Rewrites `localhost` URLs to Docker service names for outbound requests:
 
 When WordPress makes an HTTP request, `localhost` URLs are rewritten to Docker service names:
 
@@ -144,7 +168,10 @@ docker exec woocommerce_wp curl -s "http://127.0.0.1/wp-cron.php?doing_wp_cron"
 | Webhook never fires | n8n workflow not active | Toggle workflow to **Active** |
 | Delivery log shows connection error | Missing mu-plugin | Ensure `mu-plugins/local-docker.php` exists and restart: `docker compose up -d` |
 | Webhook delayed ~60s | Normal — cron runs every minute | Wait, or run the manual cron command above |
-| n8n can't reach WooCommerce | Using `localhost:8080` in n8n | Use `{{ $env.WOOCOMMERCE_URL }}/wp-json/wc/v3/...` |
+| n8n can't reach WooCommerce | Using `localhost:8080` in n8n | WooCommerce URL: `http://wordpress:80` |
+| `Unsupported protocol host.docker.internal:` | Missing `http://` in n8n URL | Use `http://wordpress:80` |
+| n8n auth failed (401) | Trailing space in secret, or REST API off | Re-paste keys; enable **Include Credentials in Query**; mu-plugin enables REST API automatically |
+| `/wp-json/` returns 404 | Plain permalinks / missing rewrite rules | Restart stack — mu-plugin fixes this on boot |
 | Port already in use | Another app on 8080 or 5678 | Change ports in `docker-compose.yml` (e.g. `"8081:80"`) |
 | Containers won't start | Docker Desktop not running | Start Docker Desktop, then `docker compose up -d` |
 
