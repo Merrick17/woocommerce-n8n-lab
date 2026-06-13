@@ -1,0 +1,44 @@
+[
+  {
+    "name": "WooCommerce Local Bridge",
+    "active": true,
+    "nodes": [
+      {
+        "parameters": {
+          "path": "wc-order-created",
+          "options": {}
+        },
+        "id": "local-docker-webhook",
+        "name": "Order Created Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [260, 300],
+        "webhookId": "local-docker-wc-order"
+      },
+      {
+        "parameters": {},
+        "id": "local-docker-noop",
+        "name": "Order Received",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [520, 300]
+      }
+    ],
+    "connections": {
+      "Order Created Webhook": {
+        "main": [
+          [
+            {
+              "node": "Order Received",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    }
+  }
+]

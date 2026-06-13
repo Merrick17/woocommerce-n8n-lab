@@ -35,19 +35,31 @@ services:
         define('WP_MAX_MEMORY_LIMIT', '1024M');
         define('DISABLE_WP_CRON', true);
         define('WP_ENVIRONMENT_TYPE', 'local');
+        define('FORCE_SSL_ADMIN', false);
+        if (!defined('WP_HOME')) {
+          define('WP_HOME', 'http://localhost:8080');
+          define('WP_SITEURL', 'http://localhost:8080');
+        }
     volumes:
       - wp_data:/var/www/html
       - ./php-custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
       - ./mu-plugins:/var/www/html/wp-content/mu-plugins:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
 
   wp-cron:
     image: curlimages/curl:latest
     container_name: woocommerce_wp_cron
     restart: unless-stopped
     depends_on:
-      - wordpress
+      wordpress:
+        condition: service_healthy
     entrypoint: /bin/sh
     command:
       - -c
@@ -62,7 +74,8 @@ services:
     container_name: n8n
     restart: unless-stopped
     depends_on:
-      - wordpress
+      wordpress:
+        condition: service_healthy
     ports:
       - "5678:5678"
     environment:
@@ -71,13 +84,40 @@ services:
       N8N_BASIC_AUTH_PASSWORD: admin123
       N8N_HOST: localhost
       N8N_PORT: "5678"
+      N8N_PROTOCOL: http
+      N8N_SECURE_COOKIE: "false"
+      N8N_EDITOR_BASE_URL: http://localhost:5678/
       WEBHOOK_URL: http://localhost:5678/
-      WORDPRESS_URL: http://wordpress:80
       WOOCOMMERCE_URL: http://wordpress:80
     volumes:
       - n8n_data:/home/node/.n8n
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5678/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  # Lets n8n reach http://localhost:8080 (browser URL) from inside its container.
+  wp-localhost-proxy:
+    image: alpine/socat
+    container_name: wp_localhost_proxy
+    restart: unless-stopped
+    network_mode: "service:n8n"
+    depends_on:
+      n8n:
+        condition: service_healthy
+      wordpress:
+        condition: service_healthy
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        socat TCP-LISTEN:8080,fork,reuseaddr TCP:wordpress:80 &
+        socat TCP6-LISTEN:8080,fork,reuseaddr TCP:wordpress:80 &
+        wait
 
 volumes:
   db_data:

@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO, AEO &amp; GEO on WordPress — Non-Coder Course</title>
+<style>
+:root {
+  --wp-blue: #0073aa;
+  --wp-dark: #23282d;
+  --wp-accent: #00a0d2;
+  --wp-orange: #d54e21;
+  --slide-w: 1280px;
+  --slide-h: 720px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+  background: #2c3338;
+  color: #1d2327;
+  padding: 24px;
+}
+.deck { max-width: var(--slide-w); margin: 0 auto; }
+
+/* ── SLIDE SHELL ── */
+.slide {
+  width: var(--slide-w);
+  height: var(--slide-h);
+  background: #fff;
+  margin: 0 auto 32px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  page-break-after: always;
+  break-after: page;
+}
+.slide-header {
+  background: linear-gradient(135deg, var(--wp-dark) 0%, var(--wp-blue) 100%);
+  color: #fff;
+  padding: 18px 40px 14px;
+  min-height: 72px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.slide-header h2 {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  border: none;
+  margin: 0;
+}
+.slide-header .module-tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: .85;
+  white-space: nowrap;
+}
+.slide-body {
+  flex: 1;
+  padding: 32px 48px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.slide-footer {
+  background: #f0f0f1;
+  border-top: 3px solid var(--wp-accent);
+  padding: 8px 40px;
+  font-size: 11px;
+  color: #646970;
+  display: flex;
+  justify-content: space-between;
+}
+.slide-footer .brand { color: var(--wp-blue); font-weight: 600; }
+
+/* ── SLIDE TYPES ── */
+.slide-cover {
+  background: linear-gradient(160deg, #1d2327 0%, #0073aa 55%, #00a0d2 100%);
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.slide-cover .slide-body { justify-content: center; align-items: center; text-align: center; padding: 60px; }
+.slide-cover h1 { font-size: 44px; font-weight: 700; line-height: 1.15; margin-bottom: 16px; border: none; }
+.slide-cover .subtitle { font-size: 22px; opacity: .92; margin-bottom: 32px; }
+.slide-cover .meta { font-size: 14px; opacity: .75; line-height: 1.8; }
+.slide-cover .wp-icon { font-size: 64px; margin-bottom: 24px; }
+
+.slide-section {
+  background: linear-gradient(160deg, var(--wp-dark) 0%, #135e96 100%);
+  color: #fff;
+}
+.slide-section .slide-body { justify-content: center; align-items: center; text-align: center; }
+.slide-section h1 { font-size: 48px; font-weight: 700; border: none; margin-bottom: 12px; }
+.slide-section .mod-num { font-size: 18px; text-transform: uppercase; letter-spacing: 3px; opacity: .7; margin-bottom: 8px; }
+.slide-section .mod-desc { font-size: 20px; opacity: .85; max-width: 700px; }
+
+.slide-title-only .slide-body { justify-content: center; }
+.slide-title-only h2 { font-size: 36px; color: var(--wp-blue); border-left: 6px solid var(--wp-orange); padding-left: 20px; }
+
+/* Content elements */
+.slide-body ul, .slide-body ol { margin: 8px 0 8px 28px; }
+.slide-body li { font-size: 22px; line-height: 1.45; margin: 10px 0; color: #1d2327; }
+.slide-body li strong { color: var(--wp-blue); }
+.slide-body p { font-size: 20px; line-height: 1.5; margin: 8px 0; }
+.slide-body .lead { font-size: 24px; color: #50575e; margin-bottom: 16px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+.col h3 { font-size: 18px; color: var(--wp-blue); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px; }
+.col ul { margin-left: 20px; }
+.col li { font-size: 18px; margin: 8px 0; }
+
+.diagram {
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 13px;
+  background: #f6f7f7;
+  border: 1px solid #c3c4c7;
+  border-left: 4px solid var(--wp-accent);
+  padding: 16px 20px;
+  line-height: 1.4;
+  white-space: pre;
+  overflow: hidden;
+  margin-top: 12px;
+}
+.callout {
+  background: #e5f5fa;
+  border-left: 5px solid var(--wp-accent);
+  padding: 14px 18px;
+  margin-top: 16px;
+  font-size: 17px;
+}
+.callout-warn { background: #fcf0f1; border-left-color: var(--wp-orange); }
+.callout-tip { background: #edfaef; border-left-color: #00a32a; }
+.callout strong { display: block; margin-bottom: 4px; color: var(--wp-dark); }
+
+.steps { counter-reset: step; list-style: none; margin-left: 0 !important; }
+.steps li { counter-increment: step; padding-left: 48px; position: relative; }
+.steps li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 2px;
+  width: 32px; height: 32px;
+  background: var(--wp-blue); color: #fff;
+  border-radius: 50%; text-align: center;
+  line-height: 32px; font-size: 16px; font-weight: 700;
+}
+
+table.data { width: 100%; border-collapse: collapse; font-size: 16px; margin-top: 8px; }
+table.data th { background: var(--wp-dark); color: #fff; padding: 10px 14px; text-align: left; }
+table.data td { border: 1px solid #c3c4c7; padding: 10px 14px; }
+table.data tr:nth-child(even) { background: #f6f7f7; }
+
+.speaker-notes {
+  display: none;
+}
+.icon-row { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 16px; }
+.icon-card {
+  flex: 1; min-width: 180px;
+  background: #f6f7f7; border-top: 4px solid var(--wp-blue);
+  padding: 16px; text-align: center;
+}
+.icon-card .emoji { font-size: 36px; margin-bottom: 8px; }
+.icon-card h4 { font-size: 16px; color: var(--wp-blue); margin-bottom: 6px; }
+.icon-card p { font-size: 14px; color: #50575e; }
+
+/* TOC slide */
+.toc-grid { columns: 2; column-gap: 40px; }
+.toc-grid li { font-size: 17px; break-inside: avoid; margin: 6px 0; }
+
+/* Checklist */
+.checklist { list-style: none; margin-left: 0 !important; }
+.checklist li { font-size: 18px; padding-left: 28px; position: relative; }
+.checklist li::before { content: "☐"; position: absolute; left: 0; color: var(--wp-blue); font-weight: bold; }
+
+@media print {
+  body { background: #fff; padding: 0; }
+  .deck { max-width: none; }
+  .slide {
+    width: 100%; height: 100vh;
+    margin: 0; box-shadow: none;
+    page-break-after: always;
+  }
+  @page { size: landscape; margin: 0; }
+}
+@media screen {
+  .slide:hover { outline: 2px solid var(--wp-accent); outline-offset: 4px; }
+}
+</style>
+</head>
+<body>
+<div class="deck">
+<section class="slide slide-cover">
+<div class="slide-body">
+<div class="wp-icon">⚙️</div>
+<h1>SEO, AEO &amp; GEO on WordPress</h1>
+<p class="subtitle">Apply Search Optimization with Plugins — No Coding Required</p>
+<p class="meta">For Non-Coders · Freelancers · Marketers · Entrepreneurs · Content Creators<br>Rank Math · Yoast · FAQ Schema · Local SEO · AI Overviews · GEO Citations<br>18 Modules · 125+ Slides · Plugin-Only Hands-On Workshops</p>
+</div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Course Overview — Modules at a Glance</h2><span class="module-tag">Introduction</span></div>
+<div class="slide-body"><ol class="toc-grid"><li>Module 1 — SEO, AEO &amp; GEO Explained (Beginner Friendly)</li><li>Module 2 — WordPress Essentials for Non-Coders</li><li>Module 3 — Install &amp; Configure Your SEO Plugin (Rank Math / Yoast)</li><li>Module 4 — On-Page SEO Using Plugins Only</li><li>Module 5 — Technical SEO Without Writing Code</li><li>Module 6 — Keyword Research &amp; Content Planning in WordPress</li><li>Module 7 — Local SEO with WordPress Plugins</li><li>Module 8 — AEO: Answer Engine Optimization on WordPress</li><li>Module 9 — Featured Snippets, FAQ &amp; People Also Ask</li><li>Module 10 — Google AI Overviews &amp; SGE Optimization</li><li>Module 11 — GEO: ChatGPT, Perplexity &amp; Gemini Visibility</li><li>Module 12 — WooCommerce SEO for Non-Coders</li><li>Module 13 — Image, Video &amp; Media SEO Plugins</li><li>Module 14 — Internal Linking &amp; Content Clusters (Plugin-Assisted)</li><li>Module 15 — Analytics: Search Console &amp; Rank Math Dashboard</li><li>Module 16 — AI Content Tools Inside WordPress</li><li>Module 17 — No-Code SEO Automation (n8n, Zapier, Automator)</li><li>Module 18 — Capstone: Complete SEO/AEO/GEO WordPress Site</li><li>Appendix — Checklists, Glossary &amp; Certification</li></ol></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 0 · Slide 2</span></div>
+</section>
+<section class="slide slide-section" id="module1">
+<div class="slide-body">
+<p class="mod-num">Module 1</p>
+<h1>SEO, AEO &amp; GEO Explained</h1>
+<p class="mod-desc">No coding experience required — every technique uses WordPress plugins and click-by-click settings.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 1 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Three Ways People Find Your Website Today</h2><span class="module-tag">SEO AEO GEO Intro</span></div>
+<div class="slide-body"><ul><li><strong>SEO</strong> — Search Engine Optimization → Google blue links</li><li><strong>AEO</strong> — Answer Engine Optimization → featured snippets, voice answers</li><li><strong>GEO</strong> — Generative Engine Optimization → ChatGPT, Perplexity, Gemini citations</li><li>Your WordPress site can rank in <strong>all three</strong> using plugins — no code</li><li>This course teaches <strong>what to click</strong>, not what to code</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 1 · Slide 1</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Traditional SEO vs AEO vs GEO</h2><span class="module-tag">SEO AEO GEO Intro</span></div>
+<div class="slide-body"><pre class="diagram">
+  USER QUESTION: &quot;best wordpress seo plugin 2026&quot;
+         │
+    ┌────┴────┬────────────┬─────────────┐
+    ▼         ▼            ▼             ▼
+  GOOGLE    GOOGLE       CHATGPT     PERPLEXITY
+  organic   AI Overview  synthesizes  cites sources
+  #1-#10    answer box   an answer    with links
+    │         │            │             │
+    └─────────┴────────────┴─────────────┘
+              YOUR WORDPRESS SITE
+         (optimized with Rank Math / Yoast)
+</pre><ul><li>SEO = get on page 1 of Google</li><li>AEO = become THE answer Google shows at top</li><li>GEO = become a source AI tools cite and recommend</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 1 · Slide 2</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>What Non-Coders CAN Do in WordPress</h2><span class="module-tag">SEO AEO GEO Intro</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>With plugins you can</h3><ul><li>Write SEO titles &amp; meta descriptions</li><li>Create XML sitemaps automatically</li><li>Add FAQ schema with a block click</li><li>Speed up site with cache plugin toggles</li><li>Connect Google Search Console in 2 clicks</li><li>Build answer-first content with templates</li></ul></div>
+<div class="col"><h3>You do NOT need to</h3><ul><li>Edit PHP or theme files</li><li>Write robots.txt manually</li><li>Code JSON-LD schema by hand</li><li>Use FTP or command line</li><li>Understand HTML/CSS (helpful but optional)</li><li>Hire a developer for basic SEO setup</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 1 · Slide 3</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Your Non-Coder Plugin Toolkit</h2><span class="module-tag">SEO AEO GEO Intro</span></div>
+<div class="slide-body">
+<table class="data"><tr><th>Goal</th><th>Plugin (pick one per row)</th><th>What it does for you</th></tr>
+<tr><td>SEO hub</td><td>Rank Math OR Yoast SEO</td><td>Titles, meta, sitemap, schema — all in editor</td></tr>
+<tr><td>Speed</td><td>LiteSpeed Cache OR WP Rocket</td><td>Toggle settings → faster pages</td></tr>
+<tr><td>FAQ / AEO</td><td>Rank Math FAQ Block OR Yoast FAQ</td><td>FAQ schema without code</td></tr>
+<tr><td>Forms + leads</td><td>WPForms OR Fluent Forms</td><td>Contact pages for local SEO</td></tr>
+<tr><td>Redirects</td><td>Rank Math Redirection OR Redirection</td><td>Fix broken links in admin</td></tr>
+<tr><td>Local SEO</td><td>Rank Math Local OR Yoast Local</td><td>LocalBusiness schema wizard</td></tr>
+<tr><td>AI writing</td><td>Rank Math Content AI OR AI Engine</td><td>Draft content inside WordPress</td></tr>
+</table>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 1 · Slide 4</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Map Your SEO/AEO/GEO Goals</h2><span class="module-tag">SEO AEO GEO Intro</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Write down your website type (blog, business, shop, local service)</li><li>List 5 questions your customers ask (these become AEO/GEO targets)</li><li>Install WordPress locally or use your existing site</li><li>Verify you can login to wp-admin and find Plugins menu</li><li>Screenshot your empty dashboard — your &#x27;before&#x27; state</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>1-page goal sheet: 5 target questions + site type</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 1 · Slide 5</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">SEO AEO GEO Intro</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Explain SEO, AEO, and GEO in plain language</li><li>Know which plugins replace coding tasks</li><li>Understand this course is 100% click-based WordPress admin</li><li>Identify your site&#x27;s primary search channels</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 1 · Slide 6</span></div>
+</section>
+<section class="slide slide-section" id="module2">
+<div class="slide-body">
+<p class="mod-num">Module 2</p>
+<h1>WordPress Essentials for Non-Coders</h1>
+<p class="mod-desc">Only what you need in wp-admin to do SEO — nothing extra.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 2 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>WordPress Admin — 6 Areas You Will Use</h2><span class="module-tag">WP for Non-Coders</span></div>
+<div class="slide-body"><ul><li><strong>Posts</strong> — blog articles (most SEO content lives here)</li><li><strong>Pages</strong> — About, Services, Contact (static SEO pages)</li><li><strong>Media</strong> — upload images, add alt text for image SEO</li><li><strong>Plugins</strong> — install Rank Math, cache, forms</li><li><strong>Settings → Permalinks</strong> — set to "Post name" once</li><li><strong>Appearance → Menus</strong> — navigation (helps internal linking)</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 2 · Slide 7</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>One-Time WordPress Settings for SEO</h2><span class="module-tag">WP for Non-Coders</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li><strong>Settings → General</strong> — correct site title and tagline</li>
+<li><strong>Settings → Permalinks</strong> — select <strong>Post name</strong> → Save</li>
+<li><strong>Settings → Reading</strong> — set homepage (static page or blog)</li>
+<li><strong>Settings → Privacy</strong> — ensure "Discourage search engines" is OFF on live site</li>
+<li><strong>Install SSL</strong> — hosting panel → Force HTTPS (most hosts: one click)</li>
+</ol>
+<div class="callout callout-tip"><strong>Non-coder rule</strong>If a setting isn't listed above or in your SEO plugin, you probably don't need to touch it.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 2 · Slide 8</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Posts vs Pages — SEO Perspective</h2><span class="module-tag">WP for Non-Coders</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>Use Posts for</h3><ul><li>Blog articles targeting keywords</li><li>How-to guides (AEO gold)</li><li>News and updates</li><li>FAQ-style content</li><li>Content clusters / topic hubs</li></ul></div>
+<div class="col"><h3>Use Pages for</h3><ul><li>Homepage (main keyword target)</li><li>About (E-E-A-T trust signals)</li><li>Service pages (local + commercial SEO)</li><li>Contact (local NAP consistency)</li><li>Pillar / cornerstone content</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 2 · Slide 9</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>The Block Editor — SEO Content Without Code</h2><span class="module-tag">WP for Non-Coders</span></div>
+<div class="slide-body"><ul><li><strong>Heading block</strong> — one H1 per page, H2/H3 for sections</li><li><strong>Paragraph block</strong> — write answer-first intro (AEO)</li><li><strong>FAQ block</strong> — Rank Math or Yoast adds schema automatically</li><li><strong>Image block</strong> — always fill Alt Text field on right panel</li><li><strong>List block</strong> — numbered steps win featured snippets</li><li><strong>Table block</strong> — comparisons rank well in AI Overviews</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 2 · Slide 10</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Configure WordPress for SEO</h2><span class="module-tag">WP for Non-Coders</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Set permalinks to Post name</li><li>Create 3 pages: Home, About, Contact</li><li>Create 1 blog post with H1, 2 H2s, and an image with alt text</li><li>Assign homepage under Settings → Reading</li><li>Verify site loads with https://</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>3 pages + 1 post published with correct permalink structure</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 2 · Slide 11</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">WP for Non-Coders</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Navigate wp-admin confidently as a non-coder</li><li>Apply one-time SEO-friendly WordPress settings</li><li>Choose posts vs pages for different content types</li><li>Use blocks instead of code for structured content</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 2 · Slide 12</span></div>
+</section>
+<section class="slide slide-section" id="module3">
+<div class="slide-body">
+<p class="mod-num">Module 3</p>
+<h1>Install &amp; Configure Your SEO Plugin</h1>
+<p class="mod-desc">Rank Math or Yoast — complete setup wizard, zero code.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 3 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Install Rank Math — Click by Click</h2><span class="module-tag">SEO Plugin Setup</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li>Plugins → <strong>Add New</strong> → search "Rank Math SEO"</li>
+<li>Install Now → <strong>Activate</strong></li>
+<li>Click <strong>Start Wizard</strong> — do not skip</li>
+<li>Choose site type: Business / Blog / Shop</li>
+<li>Connect Google Search Console (optional but recommended)</li>
+<li>Enable Sitemap, Schema, Redirection modules</li>
+<li>Finish wizard → go to Rank Math → Dashboard</li>
+</ol>
+<div class="callout callout-warn"><strong>Important</strong>Install ONLY Rank Math OR Yoast — never both. They conflict.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 3 · Slide 13</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Rank Math — Essential Settings (No Code)</h2><span class="module-tag">SEO Plugin Setup</span></div>
+<div class="slide-body">
+<table class="data"><tr><th>Menu</th><th>What to set</th><th>Why it matters</th></tr>
+<tr><td>General Settings → Edit robots.txt</td><td>Use default — don't block site</td><td>Lets Google crawl you</td></tr>
+<tr><td>Sitemap Settings</td><td>Enable posts, pages, categories</td><td>Auto XML sitemap</td></tr>
+<tr><td>Titles & Meta → Homepage</td><td>Write title + meta description</td><td>Google SERP appearance</td></tr>
+<tr><td>Titles & Meta → Posts</td><td>Template: %title% %sep% %sitename%</td><td>Auto titles for all posts</td></tr>
+<tr><td>Schema → Homepage</td><td>Organization or LocalBusiness</td><td>Knowledge panel signals</td></tr>
+<tr><td>404 Monitor</td><td>Turn ON</td><td>Find broken links to fix</td></tr>
+</table>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 3 · Slide 14</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Yoast SEO Alternative Setup</h2><span class="module-tag">SEO Plugin Setup</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>Yoast wizard steps</h3><ul><li>Install Yoast SEO from plugin directory</li><li>Run First-time configuration</li><li>Set Organization vs Person</li><li>Configure Search Appearance → Content Types</li><li>Enable XML sitemap (on by default)</li><li>Connect Site Kit for GSC (optional)</li></ul></div>
+<div class="col"><h3>Yoast daily use</h3><ul><li>Edit post → scroll to Yoast metabox</li><li>Set focus keyphrase</li><li>Edit SEO title + meta description</li><li>Follow green bullet checklist</li><li>Add FAQ block (Yoast Premium or free FAQ plugin)</li><li>Check Search Appearance preview</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 3 · Slide 15</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Connect Google Search Console (2-Minute Plugin Method)</h2><span class="module-tag">SEO Plugin Setup</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li>Rank Math → General Settings → <strong>Search Console</strong></li>
+<li>Click <strong>Connect Google Account</strong></li>
+<li>Authorize Rank Math to read your GSC data</li>
+<li>Alternatively: Yoast → General → Webmaster Tools → paste verification meta tag</li>
+<li>Or use plugin <strong>Site Kit by Google</strong> — one-click GSC + Analytics</li>
+</ol>
+<p class="lead">Search Console shows which queries bring traffic — your SEO report card. No code needed.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 3 · Slide 16</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Complete SEO Plugin Setup</h2><span class="module-tag">SEO Plugin Setup</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Install Rank Math OR Yoast — finish entire wizard</li><li>Write homepage SEO title (60 chars) and meta description (155 chars)</li><li>Enable XML sitemap — copy sitemap URL</li><li>Submit sitemap in Google Search Console (search.google.com/search-console)</li><li>Configure Organization schema on homepage</li><li>Screenshot Rank Math/Yoast dashboard showing green status</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>SEO plugin fully configured + GSC sitemap submitted</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 3 · Slide 17</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">SEO Plugin Setup</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Install and complete SEO plugin wizard without code</li><li>Configure sitemap, titles, schema via plugin menus</li><li>Connect Google Search Console through plugin</li><li>Choose one SEO plugin and master its interface</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 3 · Slide 18</span></div>
+</section>
+<section class="slide slide-section" id="module4">
+<div class="slide-body">
+<p class="mod-num">Module 4</p>
+<h1>On-Page SEO Using Plugins Only</h1>
+<p class="mod-desc">Optimize every page from the WordPress editor — no HTML required.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 4 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>The Non-Coder On-Page SEO Checklist (Per Page)</h2><span class="module-tag">On-Page SEO</span></div>
+<div class="slide-body"><ul><li><strong>Focus keyword</strong> — enter in Rank Math/Yoast metabox</li><li><strong>SEO title</strong> — compelling, under 60 characters</li><li><strong>Meta description</strong> — 150–155 chars, includes keyword + CTA</li><li><strong>URL slug</strong> — short, readable: /wordpress-seo-guide/</li><li><strong>H1</strong> — one main heading matching intent</li><li><strong>H2/H3</strong> — logical sections (plugin analyzes these)</li><li><strong>Internal links</strong> — link to 2–3 related pages on your site</li><li><strong>Featured image</strong> — with keyword-rich alt text</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 4 · Slide 19</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Using Rank Math in the Post Editor</h2><span class="module-tag">On-Page SEO</span></div>
+<div class="slide-body">
+<ul>
+<li><strong>General tab</strong> — focus keyword, pillar content toggle</li>
+<li><strong>Advanced tab</strong> — robots meta (usually leave default), canonical URL</li>
+<li><strong>Schema tab</strong> — Article, FAQ, HowTo, Product (dropdown — no code)</li>
+<li><strong>Social tab</strong> — Facebook/Twitter preview image and title</li>
+<li><strong>Traffic light score</strong> — follow suggestions until green/orange</li>
+</ul>
+<div class="callout callout-tip"><strong>AEO tip</strong>Write a 40–60 word direct answer paragraph immediately after H1 — this targets featured snippets.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 4 · Slide 20</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Title &amp; Meta Formulas (Copy-Paste Templates)</h2><span class="module-tag">On-Page SEO</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>Blog post title templates</h3><ul><li>How to [Keyword] in [Year] (Step-by-Step)</li><li>[Number] Best [Keyword] for [Audience]</li><li>What Is [Keyword]? Complete Guide</li><li>[Keyword] vs [Alternative]: Which to Choose?</li></ul></div>
+<div class="col"><h3>Meta description template</h3><ul><li>Learn [keyword] with our [year] guide.</li><li>Covers [benefit 1], [benefit 2], and [benefit 3].</li><li>Perfect for [audience]. [CTA: Read now / Get started]</li><li>Keep under 155 characters total</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 4 · Slide 21</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Schema Types — Select from Dropdown (No JSON-LD Coding)</h2><span class="module-tag">On-Page SEO</span></div>
+<div class="slide-body">
+<table class="data"><tr><th>Content type</th><th>Schema to select</th><th>Rich result</th></tr>
+<tr><td>Blog tutorial</td><td>Article or HowTo</td><td>How-to rich results</td></tr>
+<tr><td>FAQ page</td><td>FAQ (use FAQ block)</td><td>FAQ accordion in Google</td></tr>
+<tr><td>Product page</td><td>Product</td><td>Price, availability in SERP</td></tr>
+<tr><td>Local business page</td><td>LocalBusiness</td><td>Local pack signals</td></tr>
+<tr><td>Recipe blog</td><td>Recipe</td><td>Recipe card in search</td></tr>
+<tr><td>Review/comparison</td><td>Article + FAQ block</td><td>AI Overview + PAA</td></tr>
+</table>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 4 · Slide 22</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Optimize 3 WordPress Pages</h2><span class="module-tag">On-Page SEO</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Pick 3 pages/posts on your site (or create new ones)</li><li>Apply full on-page checklist to each in Rank Math/Yoast</li><li>Add answer-first paragraph to one post (AEO prep)</li><li>Set schema type appropriate to each page</li><li>Preview Google snippet in plugin — screenshot all 3</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>3 fully optimized pages with plugin scores documented</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 4 · Slide 23</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">On-Page SEO</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Apply per-page SEO checklist entirely within WordPress editor</li><li>Use plugin metabox for titles, meta, schema — no code</li><li>Write answer-first intros for AEO compatibility</li><li>Select schema types from plugin dropdown menus</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 4 · Slide 24</span></div>
+</section>
+<section class="slide slide-section" id="module5">
+<div class="slide-body">
+<p class="mod-num">Module 5</p>
+<h1>Technical SEO Without Writing Code</h1>
+<p class="mod-desc">Sitemaps, speed, mobile, HTTPS — all handled by plugins.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 5 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Technical SEO Tasks → Plugin Solution</h2><span class="module-tag">Technical SEO</span></div>
+<div class="slide-body"><ul><li><strong>XML Sitemap</strong> → Rank Math / Yoast (automatic)</li><li><strong>Robots.txt</strong> → Rank Math → Edit robots.txt (visual editor)</li><li><strong>HTTPS/SSL</strong> → Hosting panel or Really Simple SSL plugin</li><li><strong>Page speed</strong> → LiteSpeed Cache or WP Rocket (toggle ON)</li><li><strong>Image compression</strong> → ShortPixel or Imagify plugin</li><li><strong>Broken links</strong> → Rank Math 404 Monitor + Redirection plugin</li><li><strong>Mobile-friendly</strong> → choose mobile-responsive theme (Astra, Kadence)</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 5 · Slide 25</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Speed Plugin Settings — Non-Coder Presets</h2><span class="module-tag">Technical SEO</span></div>
+<div class="slide-body">
+<p class="lead">Install LiteSpeed Cache (free) OR WP Rocket (paid). Enable these toggles:</p>
+<ul>
+<li>✅ Enable Cache</li>
+<li>✅ Browser Cache</li>
+<li>✅ Lazy Load Images</li>
+<li>✅ Minify CSS (test site after — disable if layout breaks)</li>
+<li>✅ Minify JavaScript (same — test checkout if WooCommerce)</li>
+<li>❌ Exclude: /cart/, /checkout/, /my-account/ from cache</li>
+</ul>
+<div class="callout"><strong>Test after enabling</strong>Visit site in incognito. Run PageSpeed Insights (Google, free). Target 80+ mobile score.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 5 · Slide 26</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Non-Coder Technical SEO Stack</h2><span class="module-tag">Technical SEO</span></div>
+<div class="slide-body"><pre class="diagram">
+  ┌─────────────────────────────────────────────────────────┐
+  │           TECHNICAL SEO — PLUGIN ONLY                    │
+  ├──────────────┬──────────────┬──────────────┬─────────────┤
+  │ Rank Math    │ LiteSpeed    │ ShortPixel   │ Really      │
+  │ Sitemap      │ Cache        │ Image compress│ Simple SSL  │
+  │ Schema       │ Page speed   │ WebP convert │ HTTPS fix   │
+  │ 404 Monitor  │ Lazy load    │ Bulk optimize│ Mixed content│
+  └──────────────┴──────────────┴──────────────┴─────────────┘
+         │              │              │              │
+         └──────────────┴──────────────┴──────────────┘
+                    NO CODE REQUIRED
+</pre><ul></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 5 · Slide 27</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Fix Common Issues Using Plugins Only</h2><span class="module-tag">Technical SEO</span></div>
+<div class="slide-body">
+<table class="data"><tr><th>Problem in GSC</th><th>Plugin fix (no code)</th></tr>
+<tr><td>Page not indexed</td><td>Rank Math → check noindex toggle on page → turn OFF</td></tr>
+<tr><td>Duplicate title tags</td><td>Rank Math Titles & Meta → unique templates per type</td></tr>
+<tr><td>404 errors</td><td>Rank Math 404 Monitor → Redirection → add 301 redirect</td></tr>
+<tr><td>Slow LCP score</td><td>ShortPixel compress hero image + LiteSpeed cache ON</td></tr>
+<tr><td>Not HTTPS</td><td>Really Simple SSL → Activate → Enable SSL</td></tr>
+<tr><td>Missing schema</td><td>Rank Math Schema tab → select type on each page</td></tr>
+</table>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 5 · Slide 28</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Technical SEO Plugin Sprint</h2><span class="module-tag">Technical SEO</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Confirm sitemap live at yoursite.com/sitemap_index.xml</li><li>Install cache plugin — enable recommended preset</li><li>Install ShortPixel or Imagify — compress 10 images</li><li>Check Search Console Coverage — fix 1 error using plugin</li><li>Run PageSpeed before/after — record scores</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>Technical SEO checklist completed + PageSpeed before/after</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 5 · Slide 29</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Site Kit by Google — All Google Tools in WordPress Sidebar</h2><span class="module-tag">Technical SEO</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li>Plugins → Add New → install <strong>Site Kit by Google</strong></li>
+<li>Activate → Start setup → connect Google account</li>
+<li>Enable: Search Console, Analytics, PageSpeed modules</li>
+<li>View GSC data on WordPress Dashboard — no tab switching</li>
+<li>Use PageSpeed module to test URLs from wp-admin</li>
+</ol>
+<p class="lead">Best free plugin for non-coders who want Google data inside WordPress.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 5 · Slide 30</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Really Simple SSL + HTTPS (One-Click Fix)</h2><span class="module-tag">Technical SEO</span></div>
+<div class="slide-body"><ul><li>Install <strong>Really Simple SSL</strong> from plugin directory</li><li>Activate → click <strong>Go ahead, activate SSL!</strong></li><li>Plugin detects SSL certificate and configures WordPress</li><li>Fixes mixed content warnings automatically</li><li>Enables HTTPS redirect site-wide — no .htaccess editing</li><li>Verify: padlock icon in browser address bar on your site</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 5 · Slide 31</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">Technical SEO</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Handle technical SEO entirely through plugin settings</li><li>Configure cache and image plugins with safe presets</li><li>Fix GSC errors using SEO plugin tools</li><li>Never edit code for standard technical SEO tasks</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 5 · Slide 32</span></div>
+</section>
+<section class="slide slide-section" id="module6">
+<div class="slide-body">
+<p class="mod-num">Module 6</p>
+<h1>Keyword Research &amp; Content Planning</h1>
+<p class="mod-desc">Find what to write — plan in spreadsheets, publish in WordPress.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 6 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Free Keyword Research Tools (No Coding)</h2><span class="module-tag">Keywords &amp; Content</span></div>
+<div class="slide-body"><ul><li><strong>Google Search Console</strong> — queries you already rank for</li><li><strong>Google autocomplete</strong> — type keyword, note suggestions</li><li><strong>People Also Ask</strong> — every question = one blog post or FAQ</li><li><strong>AlsoAsked.com</strong> — free PAA question trees</li><li><strong>AnswerThePublic</strong> — question-based keyword ideas</li><li><strong>Rank Math Keyword Manager</strong> — track keywords in WP admin</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 6 · Slide 33</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Turn Keywords into WordPress Content Plan</h2><span class="module-tag">Keywords &amp; Content</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li>Export top 20 queries from Google Search Console (Performance report)</li>
+<li>Group similar queries into <strong>topic clusters</strong> in Google Sheets</li>
+<li>Assign one <strong>pillar page</strong> (WordPress Page) per cluster</li>
+<li>Assign <strong>supporting posts</strong> (WordPress Posts) for long-tail queries</li>
+<li>In Rank Math → Keyword Manager → add target keywords per page</li>
+<li>Schedule posts using WordPress built-in Schedule button</li>
+</ol>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 6 · Slide 34</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Search Intent → WordPress Content Type</h2><span class="module-tag">Keywords &amp; Content</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>Informational queries</h3><ul><li>Create: How-to blog post</li><li>Format: H2 steps, numbered list</li><li>AEO: answer box in first paragraph</li><li>Plugin: FAQ block at bottom</li><li>Example: &quot;what is wordpress seo&quot;</li></ul></div>
+<div class="col"><h3>Commercial queries</h3><ul><li>Create: Comparison or Best-of page</li><li>Format: Table block comparing options</li><li>GEO: clear pros/cons AI can cite</li><li>Plugin: Product schema if affiliate</li><li>Example: &quot;best seo plugin wordpress&quot;</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 6 · Slide 35</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Build a 30-Day Content Calendar</h2><span class="module-tag">Keywords &amp; Content</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Research 10 keywords using GSC + People Also Ask</li><li>Create Google Sheet: keyword | intent | page type | publish date</li><li>Create 1 pillar Page in WordPress for main topic</li><li>Outline 5 supporting Posts linked to pillar</li><li>Add all keywords to Rank Math Keyword Manager</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>Content calendar sheet + 1 pillar page draft in WordPress</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 6 · Slide 36</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">Keywords &amp; Content</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Research keywords using free non-coder tools</li><li>Map keywords to WordPress pages and posts</li><li>Plan content clusters without any coding</li><li>Track keywords in SEO plugin dashboard</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 6 · Slide 37</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Rank Math Keyword Manager — Track Rankings in WP Admin</h2><span class="module-tag">Keywords &amp; Content</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li>Rank Math → <strong>Keyword Manager</strong> (enable module in Dashboard first)</li>
+<li>Click <strong>Add Keyword</strong> → enter target keyword</li>
+<li>Assign keyword to specific post or page from dropdown</li>
+<li>Connect GSC — Rank Math shows position and clicks per keyword</li>
+<li>Review monthly: keywords stuck on page 2 → optimize that post</li>
+</ol>
+<div class="callout callout-tip"><strong>Non-coder insight</strong>If GSC shows impressions but no clicks — rewrite meta description in Rank Math to be more compelling.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 6 · Slide 38</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Free Keyword Sources — No Tools to Buy</h2><span class="module-tag">Keywords &amp; Content</span></div>
+<div class="slide-body"><ul><li><strong>Google Search Console</strong> → Performance → Queries (your real data)</li><li><strong>Google autocomplete</strong> — type keyword letter by letter, note suggestions</li><li><strong>Related searches</strong> — bottom of Google results page</li><li><strong>People Also Ask</strong> — expand each question for more ideas</li><li><strong>Competitor pages</strong> — view their H2 headings for topic ideas (manual)</li><li><strong>Rank Math Content AI</strong> — suggest related keywords (edit before using)</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 6 · Slide 39</span></div>
+</section>
+<section class="slide slide-section" id="module7">
+<div class="slide-body">
+<p class="mod-num">Module 7</p>
+<h1>Local SEO with WordPress Plugins</h1>
+<p class="mod-desc">Rank in Google Maps — plugin wizards, no code.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 7 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Local SEO Stack for WordPress Non-Coders</h2><span class="module-tag">Local SEO</span></div>
+<div class="slide-body"><ul><li><strong>Google Business Profile</strong> — claim listing (outside WordPress, essential)</li><li><strong>Rank Math Local SEO</strong> OR <strong>Yoast Local SEO</strong> — schema wizard</li><li><strong>NAP consistency</strong> — same Name, Address, Phone on Contact page + GBP</li><li><strong>WPForms contact page</strong> — embed map + local keywords</li><li><strong>LocalBusiness schema</strong> — filled via plugin form fields</li><li><strong>Review plugins</strong> — WP Business Reviews or Elfsight widget</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 7 · Slide 40</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Rank Math Local SEO — Click-by-Click</h2><span class="module-tag">Local SEO</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li>Rank Math → Dashboard → enable <strong>Local SEO</strong> module</li>
+<li>Rank Math → Titles & Meta → Local → enter business name, address, phone</li>
+<li>Select business type: LocalBusiness, Restaurant, Dentist, etc.</li>
+<li>Add opening hours, price range, service area in form fields</li>
+<li>Rank Math auto-adds LocalBusiness JSON-LD — you never see the code</li>
+<li>Create Contact page with embedded Google Map block + matching NAP text</li>
+</ol>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 7 · Slide 41</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Local SEO Content in WordPress</h2><span class="module-tag">Local SEO</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>Pages to create</h3><ul><li>Location page: &quot;Plumber in [City]&quot;</li><li>Service area pages (one per neighborhood)</li><li>About page with local trust signals</li><li>Contact page with map + NAP + form</li><li>Testimonials page with schema</li></ul></div>
+<div class="col"><h3>Plugin helpers</h3><ul><li>Rank Math → Local SEO module</li><li>Schema Pro → LocalBusiness (alternative)</li><li>Google Maps block in editor</li><li>WPForms → contact + lead capture</li><li>TrustIndex → Google reviews widget</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 7 · Slide 42</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Optimize Local WordPress Site</h2><span class="module-tag">Local SEO</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Enable Local SEO module in Rank Math/Yoast</li><li>Fill all LocalBusiness fields in plugin wizard</li><li>Create Contact page with map, NAP, and contact form</li><li>Create one location-specific service page</li><li>Verify local schema with Google Rich Results Test (paste URL)</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>Local SEO plugin configured + Contact page + Rich Results Test screenshot</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 7 · Slide 43</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">Local SEO</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Configure LocalBusiness schema via plugin wizard only</li><li>Maintain NAP consistency across WordPress and Google Business</li><li>Create location pages using standard WordPress pages</li><li>Validate schema with Google&#x27;s free testing tool</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 7 · Slide 44</span></div>
+</section>
+<section class="slide slide-section" id="module8">
+<div class="slide-body">
+<p class="mod-num">Module 8</p>
+<h1>Answer Engine Optimization (AEO)</h1>
+<p class="mod-desc">Become the answer Google and voice assistants read aloud.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 8 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>What Is AEO? (Plain English)</h2><span class="module-tag">AEO Basics</span></div>
+<div class="slide-body"><ul><li>AEO = optimizing so search engines <strong>quote your content</strong> as the answer</li><li>Targets: featured snippets, People Also Ask, voice search results</li><li>WordPress method: structure content + FAQ schema via plugins</li><li>No code — use headings, lists, FAQ blocks, and schema dropdowns</li><li>AEO content answers ONE question clearly in the first paragraph</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 8 · Slide 45</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>AEO Content Structure in WordPress</h2><span class="module-tag">AEO Basics</span></div>
+<div class="slide-body"><pre class="diagram">
+  H1: How to Install Rank Math on WordPress
+  │
+  ├── ANSWER BOX (40-60 words) ← AEO critical
+  │     &quot;To install Rank Math, go to Plugins → Add New,
+  │      search Rank Math, click Install and Activate...&quot;
+  │
+  ├── H2: Step 1 — Install the Plugin
+  │     └── Numbered list block
+  ├── H2: Step 2 — Run Setup Wizard
+  ├── H2: Step 3 — Configure Sitemap
+  └── FAQ Block (Rank Math) ← FAQ schema auto-added
+        Q: Is Rank Math free?
+        Q: Rank Math vs Yoast?
+</pre><ul><li>Answer box = featured snippet target</li><li>Numbered lists win &#x27;how to&#x27; snippets</li><li>FAQ block adds schema without coding</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 8 · Slide 46</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>AEO Writing Rules for Non-Coders</h2><span class="module-tag">AEO Basics</span></div>
+<div class="slide-body">
+<ul>
+<li><strong>Question as H1</strong> — match exactly what users search</li>
+<li><strong>Direct answer first</strong> — 40–60 words, no fluff before the answer</li>
+<li><strong>Numbered steps</strong> — use List block (ordered) for processes</li>
+<li><strong>Definition paragraphs</strong> — "X is..." for "what is X" queries</li>
+<li><strong>Comparison tables</strong> — Table block for "X vs Y" queries</li>
+<li><strong>FAQ section</strong> — minimum 3 questions at bottom of every guide</li>
+</ul>
+<div class="callout callout-tip"><strong>Plugin assist</strong>Rank Math Content AI can generate FAQ questions — review and edit before publishing.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 8 · Slide 47</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Write One Answer-First Article</h2><span class="module-tag">AEO Basics</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Pick one &#x27;how to&#x27; or &#x27;what is&#x27; question from People Also Ask</li><li>Create WordPress post — H1 = exact question</li><li>Write 50-word direct answer as first paragraph</li><li>Add 5+ numbered steps as H2 sections</li><li>Add Rank Math FAQ block with 3 related questions at bottom</li><li>Set schema: HowTo or FAQ — test in Rich Results Test</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>1 AEO-optimized post published with FAQ schema verified</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 8 · Slide 48</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Voice Search AEO — Optimize Without Code</h2><span class="module-tag">AEO Basics</span></div>
+<div class="slide-body">
+<ul>
+<li><strong>Conversational H1s</strong> — "How do I install an SEO plugin on WordPress?" not "SEO Plugin Install"</li>
+<li><strong>Short answers</strong> — voice reads one paragraph; keep answer box under 30 words for voice</li>
+<li><strong>FAQ block</strong> — mirrors how people ask Alexa/Siri/Google Assistant</li>
+<li><strong>Local voice queries</strong> — "near me" pages with LocalBusiness schema via Rank Math Local</li>
+<li><strong>Speakable schema</strong> — Rank Math PRO adds speakable markup automatically</li>
+</ul>
+<div class="callout"><strong>Test it</strong>Ask your phone's Google Assistant your target question. See which site it reads. Match that format.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 8 · Slide 49</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>AEO Plugin Quick Reference</h2><span class="module-tag">AEO Basics</span></div>
+<div class="slide-body"><ul><li><strong>Rank Math FAQ Block</strong> — FAQPage schema, free</li><li><strong>Rank Math HowTo schema</strong> — Schema tab → HowTo on tutorial posts</li><li><strong>Yoast FAQ block</strong> — Yoast Premium or Structured Content plugin</li><li><strong>Easy Accordion</strong> — visual FAQ layout + pair with Rank Math schema</li><li><strong>Table of Contents</strong> — Easy TOC plugin for long AEO guides</li><li><strong>Rich Results Test</strong> — search.google.com/test/rich-results (free validation)</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 8 · Slide 50</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">AEO Basics</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Structure WordPress content for featured snippets</li><li>Write answer-first paragraphs without coding</li><li>Use FAQ blocks for automatic schema markup</li><li>Apply AEO template to every how-to and what-is post</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 8 · Slide 51</span></div>
+</section>
+<section class="slide slide-section" id="module9">
+<div class="slide-body">
+<p class="mod-num">Module 9</p>
+<h1>Featured Snippets, FAQ &amp; People Also Ask</h1>
+<p class="mod-desc">Win position zero using WordPress blocks and plugins.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 9 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Add FAQ Schema — Rank Math FAQ Block (No Code)</h2><span class="module-tag">Snippets &amp; FAQ</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li>Edit any post or page in WordPress block editor</li>
+<li>Click <strong>+</strong> → search "Rank Math FAQ"</li>
+<li>Add Question → type question → Add Answer → type answer</li>
+<li>Repeat for 3–8 questions</li>
+<li>Publish — Rank Math adds FAQPage schema automatically</li>
+<li>Test: Google Rich Results Test → paste URL → see FAQ detected</li>
+</ol>
+<p class="lead">Yoast users: Yoast FAQ block (Premium) or free plugin "Structured Content" works similarly.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 9 · Slide 52</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Snippet Type → WordPress Format</h2><span class="module-tag">Snippets &amp; FAQ</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>Paragraph snippet</h3><ul><li>40–60 word definition after H1</li><li>Bold key term once</li><li>Use &quot;is defined as&quot; or &quot;refers to&quot;</li><li>Rank Math: mark as definitional content</li></ul></div>
+<div class="col"><h3>List / Table snippet</h3><ul><li>Ordered list for steps (HowTo)</li><li>Unordered list for &#x27;best tools&#x27; lists</li><li>Table block for comparisons</li><li>Keep list items parallel in structure</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 9 · Slide 53</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>People Also Ask (PAA) Strategy in WordPress</h2><span class="module-tag">Snippets &amp; FAQ</span></div>
+<div class="slide-body"><ul><li><strong>Step 1:</strong> Google your target keyword → copy all PAA questions</li><li><strong>Step 2:</strong> Each PAA question = one H2 in your post OR one FAQ item</li><li><strong>Step 3:</strong> Answer each in 2–3 sentences under its H2</li><li><strong>Step 4:</strong> Also add all as FAQ block items for schema</li><li><strong>Plugin:</strong> AlsoAsked export → paste into WordPress outline</li><li><strong>Result:</strong> one comprehensive post targets 10+ related questions</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 9 · Slide 54</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: PAA Domination Post</h2><span class="module-tag">Snippets &amp; FAQ</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Google one target keyword — copy 8 People Also Ask questions</li><li>Create WordPress post targeting main keyword</li><li>Write H2 for each PAA question with 2-sentence answer</li><li>Add all 8 as Rank Math FAQ block items too</li><li>Submit URL to Google Search Console → Request Indexing</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>1 PAA-optimized post covering 8 related questions</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 9 · Slide 55</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">Snippets &amp; FAQ</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Add FAQ schema using Rank Math FAQ block — zero code</li><li>Format content for paragraph, list, and table snippets</li><li>Use PAA questions as content outline in WordPress</li><li>Validate rich results with Google&#x27;s free test tool</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 9 · Slide 56</span></div>
+</section>
+<section class="slide slide-section" id="module10">
+<div class="slide-body">
+<p class="mod-num">Module 10</p>
+<h1>Google AI Overviews Optimization</h1>
+<p class="mod-desc">Get cited in Google&#x27;s AI-generated answers.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 10 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>How AI Overviews Choose Sources</h2><span class="module-tag">AI Overviews</span></div>
+<div class="slide-body"><ul><li>Google AI Overviews pull from pages already ranking well</li><li>Prefer <strong>clear, factual, well-structured</strong> content</li><li>Lists, tables, and definitions are heavily cited</li><li>E-E-A-T signals matter — author bio, About page, credentials</li><li>WordPress fix: structure + schema via plugins, not code</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 10 · Slide 57</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>WordPress Checklist for AI Overview Eligibility</h2><span class="module-tag">AI Overviews</span></div>
+<div class="slide-body">
+<ul class="checklist">
+<li>Page indexed in Google (check Search Console)</li>
+<li>Rank Math score green/orange on target page</li>
+<li>Answer-first paragraph present (40–60 words)</li>
+<li>FAQ schema on page (FAQ block)</li>
+<li>Author name + bio visible (Author box plugin or theme)</li>
+<li>Page loads fast (cache plugin enabled, PageSpeed 80+)</li>
+<li>Content updated within last 12 months (show current year in title)</li>
+<li>Internal links from other indexed pages on your site</li>
+</ul>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 10 · Slide 58</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Content Formats AI Overviews Prefer</h2><span class="module-tag">AI Overviews</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>High citation formats</h3><ul><li>Step-by-step tutorials (HowTo schema)</li><li>Comparison tables (Table block)</li><li>Definition + expanded explanation</li><li>Statistics with cited sources</li><li>Expert quotes with attribution</li></ul></div>
+<div class="col"><h3>WordPress plugins to help</h3><ul><li>Rank Math HowTo schema (dropdown)</li><li>Tableberg or native Table block</li><li>Simple Author Box plugin</li><li>Easy Table of Contents plugin</li><li>Last Updated date plugin (shows freshness)</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 10 · Slide 59</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Optimize One Page for AI Overviews</h2><span class="module-tag">AI Overviews</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Pick your highest-traffic WordPress page from GSC</li><li>Add answer-first paragraph + update year in title</li><li>Add HowTo or FAQ schema via Rank Math</li><li>Add author bio box at bottom of post</li><li>Add Table of Contents plugin for long content</li><li>Re-submit URL in Search Console</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>Before/after screenshot of optimized page + schema test result</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 10 · Slide 60</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">AI Overviews</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Understand what makes WordPress content AI Overview eligible</li><li>Apply non-coder checklist for AI-friendly structure</li><li>Use schema plugins for HowTo and FAQ markup</li><li>Maintain E-E-A-T signals with author and freshness plugins</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 10 · Slide 61</span></div>
+</section>
+<section class="slide slide-section" id="module11">
+<div class="slide-body">
+<p class="mod-num">Module 11</p>
+<h1>GEO — Generative Engine Optimization</h1>
+<p class="mod-desc">Get cited by ChatGPT, Perplexity, Gemini, and Claude.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 11 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>GEO vs SEO — What&#x27;s Different for WordPress Users?</h2><span class="module-tag">GEO Mastery</span></div>
+<div class="slide-body"><ul><li><strong>SEO</strong> = rank high on Google results page</li><li><strong>GEO</strong> = be the website AI tools quote and link to</li><li>AI tools retrieve from authoritative, clear, structured pages</li><li>WordPress advantage: publish detailed guides AI can parse easily</li><li>No special GEO plugin needed — Rank Math + great content structure</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 11 · Slide 62</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Why AI Cites Some WordPress Sites and Ignores Others</h2><span class="module-tag">GEO Mastery</span></div>
+<div class="slide-body"><pre class="diagram">
+  AI RETRIEVAL PREFERENCES
+  ─────────────────────────────────────────────────────
+  ✅ CITED                    ❌ IGNORED
+  ─────────────────────────────────────────────────────
+  Clear H2/H3 structure       Wall of text, no headings
+  Defined terms upfront       Vague marketing fluff
+  Author + date visible       Anonymous, outdated content
+  FAQ with direct answers     No structured Q&amp;A
+  Comparison tables           Thin affiliate pages
+  .edu/.gov + major brands    Unknown domains (until authority built)
+  Regularly updated           Last modified 2019
+  ─────────────────────────────────────────────────────
+</pre><ul><li>GEO is earned through content quality and structure</li><li>Plugins help with schema, TOC, author box — not magic buttons</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 11 · Slide 63</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>GEO Content Template for WordPress (Copy This Structure)</h2><span class="module-tag">GEO Mastery</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li><strong>H1:</strong> Clear topic title with year</li>
+<li><strong>Intro:</strong> 2-sentence summary of what page covers (AI quotable)</li>
+<li><strong>H2: What is [Topic]?</strong> — 3-sentence definition</li>
+<li><strong>H2: Key Features / Benefits</strong> — bullet list</li>
+<li><strong>H2: [Topic] vs [Alternative]</strong> — comparison table</li>
+<li><strong>H2: How to [Action]</strong> — numbered steps</li>
+<li><strong>H2: FAQ</strong> — Rank Math FAQ block, 5+ questions</li>
+<li><strong>Author box + last updated date</strong> — E-E-A-T signals</li>
+</ol>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 11 · Slide 64</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Test Your GEO Visibility (Free, No Code)</h2><span class="module-tag">GEO Mastery</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>Manual tests monthly</h3><ul><li>Ask ChatGPT (browse on): your target question</li><li>Ask Perplexity: same question — note cited URLs</li><li>Ask Gemini: who does it recommend?</li><li>Record: Are you cited? Which competitor is?</li><li>Track in Google Sheet monthly</li></ul></div>
+<div class="col"><h3>Improve if not cited</h3><ul><li>Add comparison table to existing post</li><li>Expand FAQ section to 8+ questions</li><li>Add author credentials on About page</li><li>Update publish date + add new statistics</li><li>Build internal links from other posts</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 11 · Slide 65</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: GEO Audit &amp; Content Upgrade</h2><span class="module-tag">GEO Mastery</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Pick 3 target questions relevant to your WordPress site</li><li>Test all 3 in Perplexity — record who gets cited</li><li>Upgrade your WordPress page using GEO template above</li><li>Add FAQ block + comparison table + author box</li><li>Re-test in 7 days — document citation changes</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>GEO tracking sheet + 1 upgraded page with full template</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 11 · Slide 66</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>GEO Plugins &amp; WordPress Settings That Help</h2><span class="module-tag">GEO Mastery</span></div>
+<div class="slide-body">
+<ul>
+<li><strong>Rank Math FAQ block</strong> — Q&A format AI tools love to parse</li>
+<li><strong>Easy Table of Contents</strong> — clear document structure for AI retrieval</li>
+<li><strong>Simple Author Box</strong> — E-E-A-T: show who wrote the content</li>
+<li><strong>WP Last Modified Info</strong> — display "Updated [date]" for freshness signals</li>
+<li><strong>Rank Math Schema → Article</strong> — author, datePublished, dateModified auto-added</li>
+<li><strong>No GEO plugin replaces bad content</strong> — structure + depth win citations</li>
+</ul>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 11 · Slide 67</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Content Patterns AI Tools Cite Most Often</h2><span class="module-tag">GEO Mastery</span></div>
+<div class="slide-body"><ul><li><strong>"Best X for Y" lists</strong> — use Table block with pros/cons columns</li><li><strong>Step-by-step guides</strong> — HowTo schema + numbered List block</li><li><strong>Definitions</strong> — "[Term] is..." in first sentence under H2</li><li><strong>Statistics</strong> — cite source with link (AI verifies claims)</li><li><strong>Expert quotes</strong> — blockquote block with attribution</li><li><strong>Original data</strong> — even simple surveys your brand ran</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 11 · Slide 68</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">GEO Mastery</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Explain GEO and how it differs from traditional SEO</li><li>Apply GEO content template in WordPress without code</li><li>Test AI citation visibility monthly across ChatGPT and Perplexity</li><li>Improve structure and E-E-A-T to increase AI citations</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 11 · Slide 69</span></div>
+</section>
+<section class="slide slide-section" id="module12">
+<div class="slide-body">
+<p class="mod-num">Module 12</p>
+<h1>WooCommerce SEO for Non-Coders</h1>
+<p class="mod-desc">Product pages, categories, and shop SEO via plugins.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 12 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>WooCommerce + Rank Math — Product SEO Checklist</h2><span class="module-tag">WooCommerce SEO</span></div>
+<div class="slide-body"><ul><li><strong>Product title</strong> — include product name + key attribute</li><li><strong>Short description</strong> — 1–2 sentences with main keyword</li><li><strong>Long description</strong> — H2 sections, benefits, FAQ block</li><li><strong>Product schema</strong> — Rank Math auto-adds when SEO plugin active</li><li><strong>Product image alt text</strong> — describe product in Media Library</li><li><strong>Category descriptions</strong> — WooCommerce → Products → Categories → write SEO text</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 12 · Slide 70</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>WooCommerce SEO Plugin Settings</h2><span class="module-tag">WooCommerce SEO</span></div>
+<div class="slide-body">
+<ul>
+<li><strong>Rank Math → General → WooCommerce</strong> — remove /product-category/ base (optional, cleaner URLs)</li>
+<li><strong>Rank Math → Schema → Product</strong> — enable product rich snippets</li>
+<li><strong>Noindex cart/checkout</strong> — Rank Math → Titles & Meta → Cart/Checkout → noindex ON</li>
+<li><strong>Product SEO metabox</strong> — same as posts: focus keyword, title, meta per product</li>
+<li><strong>Google Listings & Ads plugin</strong> — sync products to Google Merchant Center (free)</li>
+</ul>
+<div class="callout callout-warn"><strong>Cache reminder</strong>Exclude /cart/ and /checkout/ in cache plugin or payments break.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 12 · Slide 71</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Optimize 5 WooCommerce Products</h2><span class="module-tag">WooCommerce SEO</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Install Rank Math + verify WooCommerce module active</li><li>Optimize 5 products: title, short desc, long desc, alt text</li><li>Write SEO description for 2 product categories</li><li>Enable product schema — test one URL in Rich Results Test</li><li>Noindex cart and checkout pages in Rank Math</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>5 optimized products + category descriptions + schema test</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 12 · Slide 72</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">WooCommerce SEO</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Apply SEO plugin checklist to WooCommerce products</li><li>Configure product schema and URL settings via plugin</li><li>Noindex non-SEO WooCommerce system pages</li><li>Sync products to Google with Listings &amp; Ads plugin</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 12 · Slide 73</span></div>
+</section>
+<section class="slide slide-section" id="module13">
+<div class="slide-body">
+<p class="mod-num">Module 13</p>
+<h1>Image, Video &amp; Media SEO</h1>
+<p class="mod-desc">Alt text, compression, and video embeds — all in WordPress admin.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 13 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Image SEO for Non-Coders</h2><span class="module-tag">Media SEO</span></div>
+<div class="slide-body"><ul><li><strong>Before upload:</strong> rename file descriptively: blue-running-shoes.jpg</li><li><strong>Alt text field</strong> — Media Library → click image → fill Alt Text (required)</li><li><strong>Compress plugin</strong> — ShortPixel or Imagify → auto-compress on upload</li><li><strong>WebP conversion</strong> — enable in ShortPixel settings toggle</li><li><strong>Lazy load</strong> — on by default in WordPress 5.5+ and cache plugins</li><li><strong>Image SEO in Rank Math</strong> — auto-adds alt attributes if missing (toggle ON)</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 13 · Slide 74</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Video SEO Without Hosting Video on Your Server</h2><span class="module-tag">Media SEO</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li>Upload video to <strong>YouTube</strong> (free, Google-owned = SEO benefit)</li>
+<li>In WordPress editor → Add block → <strong>YouTube</strong> → paste URL</li>
+<li>Write keyword-rich text <strong>around</strong> the embed (Google indexes surrounding text)</li>
+<li>Add FAQ block below video answering questions the video covers</li>
+<li>YouTube: fill title, description, tags with target keywords</li>
+<li>Link from WordPress post to YouTube and vice versa</li>
+</ol>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 13 · Slide 75</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Media SEO Audit</h2><span class="module-tag">Media SEO</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Install ShortPixel or Imagify — enable auto-compress</li><li>Audit 20 images — fill all missing alt text</li><li>Enable Rank Math → Image SEO → Add missing alt attributes</li><li>Embed one YouTube video in a post with keyword-rich context</li><li>Run PageSpeed — record image-related improvements</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>20 images optimized + 1 video embed post published</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 13 · Slide 76</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Rank Math Image SEO Module — Bulk Fix Alt Text</h2><span class="module-tag">Media SEO</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li>Rank Math → General Settings → <strong>Images</strong> tab</li>
+<li>Enable <strong>Add missing ALT attributes</strong></li>
+<li>Enable <strong>Add missing TITLE attributes</strong> (optional)</li>
+<li>Rank Math uses focus keyword as alt fallback on new uploads</li>
+<li>For existing images: Media Library → bulk select → use plugin bulk tools</li>
+<li>Pair with ShortPixel for compression + Rank Math for alt = full image SEO</li>
+</ol>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 13 · Slide 77</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">Media SEO</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Optimize images using Media Library alt text and compression plugins</li><li>Never skip alt text — critical for image SEO and accessibility</li><li>Embed YouTube videos instead of self-hosting large files</li><li>Use Rank Math Image SEO module for bulk alt attribute fixes</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 13 · Slide 78</span></div>
+</section>
+<section class="slide slide-section" id="module14">
+<div class="slide-body">
+<p class="mod-num">Module 14</p>
+<h1>Internal Linking &amp; Content Clusters</h1>
+<p class="mod-desc">Connect content for topical authority — plugin-assisted, no code.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 14 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Why Internal Links Matter for SEO/AEO/GEO</h2><span class="module-tag">Linking &amp; Clusters</span></div>
+<div class="slide-body"><ul><li>Help Google discover and understand your content hierarchy</li><li>Pass authority from popular pages to new pages</li><li>Keep visitors on site longer (behavioral SEO signal)</li><li>Help AI tools understand your site as a topic authority</li><li>WordPress method: manual links + Link Whisper or Rank Math suggestions</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 14 · Slide 79</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Topic Cluster in WordPress</h2><span class="module-tag">Linking &amp; Clusters</span></div>
+<div class="slide-body"><pre class="diagram">
+              PILLAR PAGE (WordPress Page)
+              &quot;Complete WordPress SEO Guide&quot;
+                        │
+        ┌───────────────┼───────────────┐
+        ▼               ▼               ▼
+   Cluster Post    Cluster Post    Cluster Post
+   &quot;SEO Titles&quot;    &quot;XML Sitemap&quot;   &quot;FAQ Schema&quot;
+        │               │               │
+        └───────────────┴───────────────┘
+              All link back to Pillar
+              Pillar links to all cluster posts
+</pre><ul><li>Create pillar as WordPress Page (evergreen)</li><li>Create clusters as Posts (specific subtopics)</li><li>Link every cluster post to pillar in first 2 paragraphs</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 14 · Slide 80</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Internal Linking Tools for Non-Coders</h2><span class="module-tag">Linking &amp; Clusters</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>Free methods</h3><ul><li>Manual link while writing (Ctrl+K in editor)</li><li>Rank Math → Link Suggestions in sidebar</li><li>WordPress &quot;Related Posts&quot; plugin</li><li>Table of Contents with anchor links</li><li>Navigation menu linking pillar pages</li></ul></div>
+<div class="col"><h3>Premium helpers</h3><ul><li>Link Whisper — AI link suggestions in editor</li><li>Rank Math PRO — internal link counter</li><li>Yoast Premium — internal linking tool</li><li>Internal Link Juicer (automated rules)</li><li>All work inside WordPress editor — no code</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 14 · Slide 81</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Build One Topic Cluster</h2><span class="module-tag">Linking &amp; Clusters</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Choose one main topic for your site</li><li>Create 1 pillar Page (1500+ words, comprehensive)</li><li>Create 4 cluster Posts (500+ words each, specific subtopics)</li><li>Add internal link from each cluster to pillar (in intro)</li><li>Add links from pillar to all 4 cluster posts</li><li>Use Rank Math Link Suggestions to find 3 more link opportunities</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>1 pillar + 4 cluster posts fully interlinked</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 14 · Slide 82</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">Linking &amp; Clusters</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Build topic clusters using WordPress pages and posts</li><li>Use plugin link suggestions instead of manual site audits</li><li>Connect pillar and cluster content with internal links</li><li>Establish topical authority for SEO, AEO, and GEO</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 14 · Slide 83</span></div>
+</section>
+<section class="slide slide-section" id="module15">
+<div class="slide-body">
+<p class="mod-num">Module 15</p>
+<h1>Analytics &amp; Monitoring</h1>
+<p class="mod-desc">Google Search Console and Rank Math — read your SEO results without code.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 15 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Google Search Console — What to Check Weekly</h2><span class="module-tag">Analytics</span></div>
+<div class="slide-body"><ul><li><strong>Performance</strong> — clicks, impressions, average position trending up?</li><li><strong>Pages</strong> — which WordPress URLs get most traffic?</li><li><strong>Queries</strong> — unexpected keywords to create content for?</li><li><strong>Indexing → Pages</strong> — any "Not indexed" errors to fix?</li><li><strong>Experience → Core Web Vitals</strong> — any poor URLs? → fix with cache plugin</li><li><strong>Sitemaps</strong> — sitemap submitted and processed?</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 15 · Slide 84</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Rank Math Analytics Dashboard (No Code Reporting)</h2><span class="module-tag">Analytics</span></div>
+<div class="slide-body">
+<ul>
+<li><strong>Rank Math → Analytics → Dashboard</strong> — traffic overview in WP admin</li>
+<li><strong>Keyword Manager</strong> — track ranking positions for target keywords</li>
+<li><strong>SEO Score</strong> — sitewide content optimization percentage</li>
+<li><strong>Google Site Kit plugin</strong> — alternative: GSC + Analytics in WP sidebar</li>
+<li><strong>Monthly routine:</strong> export GSC Performance CSV → share with client/stakeholder</li>
+</ul>
+<div class="callout callout-tip"><strong>Non-coder KPIs</strong>Clicks up? Impressions up? Average position improving? Pages indexed increasing? That's SEO success.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 15 · Slide 85</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Fix Indexing Issues Using Plugins Only</h2><span class="module-tag">Analytics</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>GSC error</h3><ul><li>Discovered — not indexed</li><li>Duplicate without canonical</li><li>Excluded by noindex tag</li><li>Crawled — currently not indexed</li><li>Soft 404</li></ul></div>
+<div class="col"><h3>Plugin fix</h3><ul><li>Improve content length + request indexing</li><li>Rank Math → set canonical on duplicate</li><li>Rank Math Advanced → remove noindex checkbox</li><li>Add internal links + update content quality</li><li>301 redirect via Rank Math Redirection module</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 15 · Slide 86</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Monthly SEO Report from WordPress</h2><span class="module-tag">Analytics</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Open Google Search Console Performance — last 28 days</li><li>Record: total clicks, impressions, avg position, top 5 pages</li><li>Check Indexing report — fix 1 issue using Rank Math</li><li>Check Rank Math SEO Score — optimize lowest-scoring page</li><li>Create 1-page monthly report in Google Docs with screenshots</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>Monthly SEO report template filled with real GSC data</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 15 · Slide 87</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">Analytics</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Monitor SEO performance weekly in Google Search Console</li><li>Use Rank Math or Site Kit dashboard inside WordPress</li><li>Fix indexing errors using plugin settings only</li><li>Produce simple monthly SEO reports for clients or stakeholders</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 15 · Slide 88</span></div>
+</section>
+<section class="slide slide-section" id="module16">
+<div class="slide-body">
+<p class="mod-num">Module 16</p>
+<h1>AI Content Tools Inside WordPress</h1>
+<p class="mod-desc">Draft and optimize content with AI plugins — human review required.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 16 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>AI Plugins for WordPress Non-Coders</h2><span class="module-tag">AI Content Tools</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>Rank Math Content AI</h3><ul><li>Generate SEO titles and meta descriptions</li><li>Suggest focus keywords</li><li>Write FAQ questions for your topic</li><li>Expand bullet points into paragraphs</li><li>Built into Rank Math — no extra install</li></ul></div>
+<div class="col"><h3>AI Engine / AI Power</h3><ul><li>ChatGPT-style writing in WP editor</li><li>Generate full blog post drafts</li><li>Create product descriptions (WooCommerce)</li><li>Requires OpenAI API key (paid, low cost)</li><li>Always human-edit before publishing</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 16 · Slide 89</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Safe AI Content Workflow for SEO/AEO/GEO</h2><span class="module-tag">AI Content Tools</span></div>
+<div class="slide-body">
+<ol class="steps">
+<li><strong>Human:</strong> Choose keyword and search intent</li>
+<li><strong>AI plugin:</strong> Generate outline or first draft</li>
+<li><strong>Human:</strong> Add real examples, facts, and brand voice</li>
+<li><strong>Human:</strong> Add answer-first paragraph (AEO)</li>
+<li><strong>Human:</strong> Add FAQ block with verified answers</li>
+<li><strong>Rank Math:</strong> Optimize title, meta, schema</li>
+<li><strong>Human:</strong> Final read — publish</li>
+</ol>
+<div class="callout callout-warn"><strong>Never publish raw AI content</strong>Google and AI tools penalize unedited, generic AI pages. Always add human expertise.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 16 · Slide 90</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: AI-Assisted SEO Article</h2><span class="module-tag">AI Content Tools</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Pick target keyword from your content calendar</li><li>Use Rank Math Content AI to generate title + meta + FAQ ideas</li><li>Draft post body with AI Engine OR write manually with AI outline</li><li>Human-edit: add answer box, statistics, personal insight</li><li>Complete Rank Math checklist → publish</li><li>Submit to Search Console → Request Indexing</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>1 AI-assisted, human-edited, fully optimized WordPress post</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 16 · Slide 91</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">AI Content Tools</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Use AI plugins to accelerate WordPress content creation</li><li>Always human-edit AI drafts for E-E-A-T and accuracy</li><li>Combine AI tools with Rank Math optimization workflow</li><li>Maintain AEO/GEO structure even on AI-assisted content</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 16 · Slide 92</span></div>
+</section>
+<section class="slide slide-section" id="module17">
+<div class="slide-body">
+<p class="mod-num">Module 17</p>
+<h1>No-Code SEO Automation</h1>
+<p class="mod-desc">n8n, Zapier, and Uncanny Automator — automate SEO tasks without coding.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 17 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>SEO Tasks You Can Automate (No Code)</h2><span class="module-tag">No-Code Automation</span></div>
+<div class="slide-body"><ul><li><strong>New post published</strong> → auto-post to social media (Uncanny Automator)</li><li><strong>Form submitted</strong> → add row to Google Sheets (WPForms + Zapier)</li><li><strong>Weekly GSC report</strong> → email via n8n scheduled workflow</li><li><strong>404 detected</strong> → Slack alert (Wordfence + n8n webhook)</li><li><strong>New WooCommerce product</strong> → notify team in Slack</li><li><strong>Backup complete</strong> → log date in maintenance spreadsheet</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 17 · Slide 93</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Uncanny Automator — SEO Recipes (Inside WordPress)</h2><span class="module-tag">No-Code Automation</span></div>
+<div class="slide-body">
+<p class="lead">Install Uncanny Automator — build recipes with dropdowns, zero code:</p>
+<ul>
+<li><strong>Recipe 1:</strong> User publishes post → Send email to editor for review</li>
+<li><strong>Recipe 2:</strong> WPForms submission → Add user to Mailchimp list</li>
+<li><strong>Recipe 3:</strong> Post published → Post to Facebook Page</li>
+<li><strong>Recipe 4:</strong> Rank Math score reaches 80 → Notify admin (advanced)</li>
+</ul>
+<div class="callout"><strong>Best for non-coders</strong>Uncanny Automator lives inside wp-admin — no external servers needed.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 17 · Slide 94</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>n8n + WordPress SEO Automation (Visual, No Code)</h2><span class="module-tag">No-Code Automation</span></div>
+<div class="slide-body"><pre class="diagram">
+  WordPress                    n8n (visual builder)           Output
+  ─────────                    ────────────────────           ──────
+  WPForms webhook    ──▶      Parse submission      ──▶     Google Sheet row
+  New post (REST)    ──▶      Filter by category    ──▶     LinkedIn post
+  Schedule trigger   ──▶      Check site URL        ──▶     Email if down
+  Rank Math sitemap  ──▶      Weekly schedule       ──▶     SEO report email
+</pre><ul><li>n8n uses drag-and-drop nodes — no programming</li><li>Connect WordPress via Application Password (Users → Profile)</li><li>Use WPForms/Fluent Forms webhook nodes for form automation</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 17 · Slide 95</span></div>
+</section>
+<section class="slide slide-workshop">
+<div class="slide-header"><h2>Workshop: Build One SEO Automation</h2><span class="module-tag">No-Code Automation</span></div>
+<div class="slide-body"><p class="lead">Hands-on lab — instructor-led</p>
+<ol class="steps"><li>Option A: Install Uncanny Automator → create &quot;post published → email&quot; recipe</li><li>Option B: WPForms webhook → n8n → Google Sheets on form submit</li><li>Test automation 3 times — verify it fires correctly</li><li>Document automation in your site management doc</li><li>Screenshot workflow/recipe as proof of setup</li></ol>
+<div class="callout callout-tip"><strong>Deliverable</strong>1 working no-code automation documented with screenshot</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 17 · Slide 96</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">No-Code Automation</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Automate repetitive SEO tasks without writing code</li><li>Use Uncanny Automator for in-WordPress automations</li><li>Connect WordPress to n8n/Zapier via webhooks and Application Passwords</li><li>Document all automations for site maintenance records</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 17 · Slide 97</span></div>
+</section>
+<section class="slide slide-section" id="module18">
+<div class="slide-body">
+<p class="mod-num">Module 18</p>
+<h1>Capstone: Complete SEO/AEO/GEO WordPress Site</h1>
+<p class="mod-desc">Apply everything — plugins only, zero code.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 18 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Capstone Requirements (Non-Coder Track)</h2><span class="module-tag">Capstone</span></div>
+<div class="slide-body">
+<ul>
+<li><strong>WordPress site live</strong> with HTTPS, Post name permalinks</li>
+<li><strong>Rank Math OR Yoast</strong> — fully configured wizard + GSC connected</li>
+<li><strong>1 topic cluster</strong> — 1 pillar page + 4 interlinked posts</li>
+<li><strong>3 AEO posts</strong> — answer-first + FAQ block + schema verified</li>
+<li><strong>1 GEO-optimized guide</strong> — comparison table + FAQ + author box</li>
+<li><strong>Local SEO OR WooCommerce SEO</strong> — one track completed</li>
+<li><strong>Cache + image plugin</strong> — PageSpeed mobile 70+ minimum</li>
+<li><strong>1 no-code automation</strong> — Automator or n8n workflow</li>
+<li><strong>Monthly SEO report</strong> — GSC screenshot + narrative</li>
+</ul>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 18 · Slide 98</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Capstone Deliverables</h2><span class="module-tag">Capstone</span></div>
+<div class="slide-body"><div class="two-col">
+<div class="col"><h3>Submit</h3><ul><li>Live site URL</li><li>5-min screen recording walking through wp-admin SEO setup</li><li>Plugin list with purpose of each</li><li>GSC Performance screenshot (28 days)</li><li>Rich Results Test screenshot for FAQ page</li><li>GEO test: Perplexity query + citation result</li></ul></div>
+<div class="col"><h3>Graded on</h3><ul><li>SEO plugin configuration completeness</li><li>On-page optimization quality (Rank Math scores)</li><li>AEO structure (answer box + FAQ schema)</li><li>GEO content template applied correctly</li><li>Technical SEO (speed, sitemap, indexing)</li><li>Documentation and report professionalism</li></ul></div>
+</div></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 18 · Slide 99</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>4-Week Capstone Schedule for Non-Coders</h2><span class="module-tag">Capstone</span></div>
+<div class="slide-body">
+<table class="data"><tr><th>Week</th><th>Focus</th><th>Plugins used</th></tr>
+<tr><td>Week 1</td><td>WP setup + SEO plugin wizard + GSC</td><td>Rank Math, Site Kit</td></tr>
+<tr><td>Week 2</td><td>On-page SEO + topic cluster content</td><td>Rank Math, Link Whisper</td></tr>
+<tr><td>Week 3</td><td>AEO posts + GEO guide + local/woo track</td><td>Rank Math FAQ, ShortPixel</td></tr>
+<tr><td>Week 4</td><td>Speed plugins + automation + report + present</td><td>LiteSpeed, Automator/n8n</td></tr>
+</table>
+<div class="callout callout-tip"><strong>You never need to code</strong>Every capstone requirement is achievable using only WordPress admin and plugins.</div>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 18 · Slide 100</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Module Summary</h2><span class="module-tag">Capstone</span></div>
+<div class="slide-body"><p class="lead">Key takeaways from this module</p><ul><li>Deliver a complete SEO/AEO/GEO optimized WordPress site</li><li>Prove all techniques applied via plugins without code</li><li>Present capstone with GSC data and AI citation tests</li><li>Earn certification as a WordPress SEO/AEO/GEO practitioner</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 18 · Slide 101</span></div>
+</section>
+<section class="slide slide-section" id="module25">
+<div class="slide-body">
+<p class="mod-num">Module 25</p>
+<h1>Appendix — Checklists &amp; Glossary</h1>
+<p class="mod-desc">Print these — use on every WordPress SEO project.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 25 · Section</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>SEO Checklist (Plugin-Based, No Code)</h2><span class="module-tag">Appendix</span></div>
+<div class="slide-body"><ul class='checklist'><li>Rank Math or Yoast installed — wizard complete, only ONE active</li><li>Google Search Console connected and sitemap submitted</li><li>Permalinks set to Post name</li><li>Homepage SEO title and meta description written</li><li>Every post has focus keyword, title, meta, and alt text on images</li><li>XML sitemap loading at /sitemap_index.xml</li><li>Cache plugin enabled with WooCommerce exclusions if applicable</li><li>Image compression plugin active (ShortPixel/Imagify)</li><li>404 monitor ON — broken links redirected</li><li>Site loads on HTTPS</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 25 · Slide 102</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>AEO Checklist — Featured Snippets &amp; FAQ</h2><span class="module-tag">Appendix</span></div>
+<div class="slide-body"><ul class='checklist'><li>Answer-first paragraph (40–60 words) on every how-to post</li><li>FAQ block added to all guide posts (minimum 3 questions)</li><li>FAQ schema verified in Google Rich Results Test</li><li>H1 matches target question for AEO posts</li><li>Numbered lists used for all step-by-step content</li><li>People Also Ask questions covered as H2 or FAQ items</li><li>Table of Contents on posts over 1500 words</li><li>Author name and bio visible on all posts</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 25 · Slide 103</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>GEO Checklist — AI Citation Optimization</h2><span class="module-tag">Appendix</span></div>
+<div class="slide-body"><ul class='checklist'><li>Comparison tables on all &#x27;best of&#x27; and &#x27;vs&#x27; pages</li><li>Clear definitions (&#x27;X is...&#x27;) on all &#x27;what is&#x27; pages</li><li>Content updated with current year in titles</li><li>E-E-A-T: About page with credentials and experience</li><li>Test monthly in Perplexity and ChatGPT — track citations</li><li>Internal links connect all related content</li><li>No thin pages under 500 words targeting competitive terms</li><li>Statistics and sources cited in content (with links)</li></ul></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 25 · Slide 104</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Glossary for Non-Coders</h2><span class="module-tag">Appendix</span></div>
+<div class="slide-body"><table class='data'><tr><th>Term</th><th>Plain English Definition</th></tr><tr><td><strong>AEO</strong></td><td>Answer Engine Optimization — optimizing to appear in featured snippets and direct answers</td></tr><tr><td><strong>GEO</strong></td><td>Generative Engine Optimization — optimizing to be cited by AI tools like ChatGPT</td></tr><tr><td><strong>SERP</strong></td><td>Search Engine Results Page — what Google shows after a search</td></tr><tr><td><strong>Featured Snippet</strong></td><td>Answer box at top of Google — position zero</td></tr><tr><td><strong>Schema</strong></td><td>Structured data — plugin adds this automatically via FAQ/Article blocks</td></tr><tr><td><strong>Sitemap</strong></td><td>XML file listing all your pages — Rank Math creates it automatically</td></tr><tr><td><strong>Focus Keyword</strong></td><td>Main search term you want a page to rank for — set in Rank Math/Yoast</td></tr><tr><td><strong>Meta Description</strong></td><td>Short summary under title in Google — write in SEO plugin metabox</td></tr><tr><td><strong>NAP</strong></td><td>Name, Address, Phone — must match everywhere for local SEO</td></tr><tr><td><strong>E-E-A-T</strong></td><td>Experience, Expertise, Authoritativeness, Trust — show via author bios and About page</td></tr><tr><td><strong>GSC</strong></td><td>Google Search Console — free tool showing your search performance</td></tr><tr><td><strong>Noindex</strong></td><td>Tells Google not to show a page in results — toggle in Rank Math Advanced tab</td></tr><tr><td><strong>Canonical</strong></td><td>Preferred URL when duplicates exist — set automatically by SEO plugin</td></tr><tr><td><strong>Internal Link</strong></td><td>Link from one page on your site to another page on your site</td></tr><tr><td><strong>Topic Cluster</strong></td><td>One pillar page + related posts all interlinked on one subject</td></tr></table></div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 25 · Slide 105</span></div>
+</section>
+<section class="slide">
+<div class="slide-header"><h2>Your Non-Coder Plugin Stack — Final Reference</h2><span class="module-tag">Appendix</span></div>
+<div class="slide-body">
+<table class="data"><tr><th>Need</th><th>Plugin</th><th>Free?</th></tr>
+<tr><td>SEO hub</td><td>Rank Math SEO</td><td>Yes (Pro optional)</td></tr>
+<tr><td>Alternative SEO</td><td>Yoast SEO</td><td>Yes (Premium optional)</td></tr>
+<tr><td>Google data in WP</td><td>Site Kit by Google</td><td>Yes</td></tr>
+<tr><td>Speed</td><td>LiteSpeed Cache</td><td>Yes</td></tr>
+<tr><td>Images</td><td>ShortPixel</td><td>Freemium</td></tr>
+<tr><td>SSL fix</td><td>Really Simple SSL</td><td>Yes</td></tr>
+<tr><td>Forms</td><td>WPForms Lite</td><td>Yes</td></tr>
+<tr><td>Automation</td><td>Uncanny Automator</td><td>Freemium</td></tr>
+<tr><td>Author box</td><td>Simple Author Box</td><td>Yes</td></tr>
+<tr><td>Table of contents</td><td>Easy Table of Contents</td><td>Yes</td></tr>
+</table>
+<p class="lead">Install only what you need. One plugin per job. No coding at any step.</p>
+</div>
+<div class="slide-footer"><span class="brand">SEO · AEO · GEO on WordPress</span><span>Module 25 · Slide 106</span></div>
+</section>
+<section class="slide slide-cover">
+<div class="slide-body">
+<div class="wp-icon">⚙️</div>
+<h1>Congratulations!</h1>
+<p class="subtitle">You Can SEO Any WordPress Site — Without Writing Code</p>
+<p class="meta">Certification · Capstone Review · Advanced Plugin Modules</p>
+</div>
+</section>
+</div>
+</body>
+</html>
