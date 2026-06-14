@@ -2,3 +2,5 @@ password.txt
 .env
 .env.*
 *.log
+.vscode/
+public/
